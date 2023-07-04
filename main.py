@@ -108,8 +108,10 @@ def get_movies_by_cat(category: str, year: int):
 def get_movies_by_category(category: str):
     return [movie for movie in movies if movie['genre'] == category]
 
-#trabajando con método post
-@app.post('/movies', tags=["movies"])
+#trabajando con método post 
+#EJEMPLO DE ENVÍO
+#http://127.0.0.1:8000/moviess?id=3&title=sda&overview=asd&year=123&rating=32&category=sadf
+@app.post('/movies', tags=["movies_prev"])
 def create_movie(
         id: int,
         title: str,
