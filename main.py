@@ -143,7 +143,7 @@ def create_movie(
     })
     return movies
 '''
-
+#PARA USAR UN APPLICATION/JSON 
 @app.post('/movies', tags=['moviesPost'])
 def create_movie(id: int = Body(), title: str = Body(), overview:str = Body(), year:int = Body(), rating: float = Body(), category: str = Body()):
     movies.append({
@@ -155,3 +155,25 @@ def create_movie(id: int = Body(), title: str = Body(), overview:str = Body(), y
         "category": category
     })
     return movies
+
+#Usando métodos put por ID
+@app.put('/movies/{id}', tags=["movies"])
+def update_movie(id: int, title: str = Body(), overview:str = Body(), year:int = Body(), rating: float = Body(), category: str = Body()):
+    
+    for item in movies:
+        if item['id'] == id:
+
+            item['title']=title,
+            item['overview']=overview,
+            item['year']=year,
+            item['rating']=rating,
+            item['category']=category,
+        
+        return movies
+    
+@app.delete('/movies/{id}', tags=["movies"])
+def delete_movie(id: int):    
+        for item in movies:
+            if item['id']==id:
+                movies.remove(item)
+            return movies
