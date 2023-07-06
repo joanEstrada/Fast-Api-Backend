@@ -5,6 +5,25 @@ app = FastAPI() #Creamos una instancia
 app.title = "My app"#Establecemos un título para la aplicacion
 app.version = "0.0.1"#Establecemos la versión
 
+##CREACION DE ESQUEMAS
+from pydantic import BaseModel
+from typing import Optional
+
+class Movie(BaseModel): #Hereda de la clase BaseModel
+    #Defino los atributos de la clase movie
+    ##Para id, existen dos maneras de definirlo como atributo de clase:
+    '''
+    #1
+    id: int | None = None #Id podría ser entero o ninguno y por defecto se podría asignar ninguno.
+    '''    
+    #2
+    id: Optional[int] = None
+    title: str
+    overview: str
+    year: str
+    rating: float
+    category: str
+
 #CORS
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
@@ -121,6 +140,7 @@ def create_movie(
         category: str ):
     return title
 
+
 #trabajando con método post pero estableciendo que el contenido estará en el body
 #de la peticion
 '''
@@ -177,3 +197,24 @@ def delete_movie(id: int):
             if item['id']==id:
                 movies.remove(item)
             return movies
+        
+#TRABAJANDO CON EL MÉTODO POST USANDO SCHEMAS
+@app.post('/movies', tags=['moviesWithSchemas'])
+def create_movie(movie: Movie):
+    movies.append(movie)
+    return movies
+
+#TRABAJADO CON EL METODO PUT USANDO SCHEMAS
+@app.put('/movies/{id}', tags=["moviesWithSchemas"])
+def update_movie(id: int, movie: Movie):
+    
+    for item in movies:
+        if item['id'] == id:
+
+            item['title']=movie.title,
+            item['overview']=movie.overview,
+            item['year']=movie.year,
+            item['rating']=movie.rating,
+            item['category']=movie.category,
+        
+        return movies
